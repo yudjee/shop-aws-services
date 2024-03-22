@@ -1,0 +1,45 @@
+service: products-service
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-auto-swagger
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-central-1
+  profile: myProfile
+
+functions:
+  getProductsList:
+    handler: handler.getProductsList
+    events:
+      - http:
+          path: /products
+          method: get
+
+  getProductById:
+    handler: handler.getProductById
+    events:
+      - http:
+          path: /products/{id}
+          method: get
+
+
+custom:
+  autoswagger:
+    title: 'Products API'
+    apiType: 'http'
+    generateSwaggerOnDeploy: true
+    typefiles: []
+    swaggerFiles: []
+    swaggerPath: 'swagger'
+    apiKeyHeaders: []
+    useStage: false
+    schemes: []
+    excludeStages: []
+    useRedirectUI: false
+          
+
