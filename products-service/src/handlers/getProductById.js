@@ -4,17 +4,18 @@ import { createResponse } from "../utils";
 export const getProductById = async (event) => {
   try {
     const { id } = event.pathParameters;
+    console.log("product id - ", id);
 
-    if (Number.isNaN(+id)) {
+    if (!id?.trim()) {
       return createResponse({
         statusCode: 400,
         body: {
-          error: { message: `product id - ${id} is not a number` },
+          error: { message: `invalid product id - ${id}` },
         },
       });
     }
 
-    const product = await getOne(+id);
+    const product = await getOne(id);
 
     if (product) {
       return createResponse({
