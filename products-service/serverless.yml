@@ -15,31 +15,43 @@ provider:
 functions:
   getProductsList:
     handler: handler.getProductsList
+    role: "arn:aws:iam::889281469035:role/DynamoDBFullForLambda"
     events:
       - http:
           path: /products
           method: get
+          cors: true
 
   getProductById:
     handler: handler.getProductById
+    role: "arn:aws:iam::889281469035:role/DynamoDBFullForLambda"
     events:
       - http:
           path: /products/{id}
           method: get
+          cors: true
+
+  createProduct:
+    handler: handler.createProduct
+    role: "arn:aws:iam::889281469035:role/DynamoDBFullForLambda"
+    events:
+      - http:
+          path: /products
+          method: post
+          cors: true
 
 
 custom:
   autoswagger:
-    title: 'Products API'
-    apiType: 'http'
+    title: "Products API"
+    apiType: "http"
     generateSwaggerOnDeploy: true
     typefiles: []
     swaggerFiles: []
-    swaggerPath: 'swagger'
+    swaggerPath: "swagger"
     apiKeyHeaders: []
     useStage: false
     schemes: []
     excludeStages: []
     useRedirectUI: false
-          
 

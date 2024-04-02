@@ -3,6 +3,7 @@ import { createResponse } from "../utils";
 
 export const getProductsList = async (event) => {
   try {
+    console.log("event - ", event);
     const products = await getAll();
 
     return createResponse({
