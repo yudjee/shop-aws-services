@@ -11,6 +11,21 @@ provider:
   runtime: nodejs18.x
   region: eu-central-1
   profile: myProfile
+  environment:
+    SQS_QUEUE_URL:
+      Ref: catalogProductsQueue
+    SNS_TOPIC_ARN:
+      Ref: createProductTopic
+
+  iamrolestatements:
+    - Effect: "Allow"
+      Action: "sqs:*"
+      Resource:
+        -Fn::GetAtt: [catalogProductsQueue, Arn]
+    - Effect: "Allow"
+      Action: "sns:*"
+      Resource:
+        -Fn::GetAtt: [createProductTopic, Arn]
 
 functions:
   getProductsList:
@@ -40,6 +55,34 @@ functions:
           method: post
           cors: true
 
+  catalogBatchProcess:
+    handler: handler.catalogBatchProcess
+    role: "arn:aws:iam::889281469035:role/catalogBatchProcessRole"
+    events:
+      - sqs:
+          batchSize: 5
+          arn:
+            Fn::GetAtt:
+              - catalogProductsQueue
+              - Arn
+
+resources:
+  Resources:
+    catalogProductsQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: catalogProductsQueue
+    createProductTopic:
+      Type: "AWS::SNS::Topic"
+      Properties:
+        TopicName: createProductTopic
+    emailSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: serhii_yudin@epam.com
+        Protocol: email
+        TopicArn:
+          Ref: createProductTopic
 
 custom:
   autoswagger:
@@ -54,4 +97,3 @@ custom:
     schemes: []
     excludeStages: []
     useRedirectUI: false
-
