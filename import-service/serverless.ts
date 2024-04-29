@@ -19,6 +19,7 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      SQS_QUEUE_URL: 'https://sqs.eu-central-1.amazonaws.com/889281469035/catalogProductsQueue'
     },
     iamRoleStatements: [
       {
@@ -28,6 +29,11 @@ const serverlessConfiguration: AWS = {
           "logs:*"
         ],
         Resource: ['arn:aws:s3:::yudin-aws-import-service/*', 'arn:aws:logs:*:*:*'],
+      },
+      {
+        Effect: 'Allow',
+        Action: 'sqs:*',
+        Resource: ['arn:aws:sqs:eu-central-1:889281469035:catalogProductsQueue']
       },
     ],
   },

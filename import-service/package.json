@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.556.0",
+    "@aws-sdk/client-sqs": "^3.556.0",
     "@aws-sdk/s3-request-presigner": "^3.556.0",
     "@middy/core": "^3.4.0",
     "@middy/http-json-body-parser": "^3.4.0",
     "aws-sdk": "^2.1594.0",
-    "csv-parser": "^3.0.0"
+    "csv-parser": "^3.0.0",
+    "stream": "^0.0.2"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.38.0",

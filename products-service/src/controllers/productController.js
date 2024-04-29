@@ -35,7 +35,7 @@ export const getAll = async () => {
 
     return productsList;
   } catch (error) {
-    return throwError(error);
+    return new Error(error);
   }
 };
 
@@ -63,7 +63,7 @@ export const getOne = async (id) => {
       return { ...productData.Item, count: productCountData.Item.count };
     }
 
-    return throwError(`product with id - ${id} not found`);
+    return new Error(`product with id - ${id} not found`);
   } catch (error) {}
 };
 
@@ -73,6 +73,7 @@ export const create = async ({
   image,
   description,
   title,
+  count = 1,
 }) => {
   try {
     const productResponse = await dynamo.send(
@@ -93,13 +94,16 @@ export const create = async ({
         TableName: productsCountTable,
         Item: {
           id,
-          count: 1,
+          count,
         },
       })
     );
 
+    console.log(productResponse, countResponse);
+
     return { productResponse, countResponse };
   } catch (error) {
-    return throwError(error);
+    console.log(error);
+    return new Error(error);
   }
 };
